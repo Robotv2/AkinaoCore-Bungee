@@ -1,0 +1,3 @@
+name: AkinaoCore
+version: '${project.version}'
+main: fr.robotv2.akinaocore.AkinaoCore
