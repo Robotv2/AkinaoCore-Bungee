@@ -56,5 +56,4 @@ public class BungeeConfig {
             e.printStackTrace();
         }
     }
-
 }
