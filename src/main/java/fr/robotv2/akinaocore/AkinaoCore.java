@@ -19,6 +19,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public final class AkinaoCore extends Plugin {
@@ -118,6 +119,7 @@ public final class AkinaoCore extends Plugin {
 
     public void setupCommand() {
         BungeeCommandManager manager = new BungeeCommandManager(this);
+        manager.getLocales().setDefaultLocale(Locale.FRANCE);
         manager.registerCommand(new AkinaoBungeeCommand(this));
         manager.registerCommand(new BoosterAdminCommand(this));
         manager.registerCommand(new BoosterCommand(this));

@@ -35,7 +35,6 @@ public class PlayerSessionManager implements Listener {
     }
 
     public void unregister(ProxiedPlayer player) {
-        getSession(player).saveToDatabase();
         playerSessions.remove(player);
     }
 
@@ -52,8 +51,12 @@ public class PlayerSessionManager implements Listener {
         plugin.getProxy().getScheduler().schedule(plugin,() -> {
 
             ProxiedPlayer player = event.getPlayer();
-            if(isFirstJoin(player))
+            if(isFirstJoin(player)) {
                 plugin.getWelcomeManager().onNewPlayerJoin(player);
+                plugin.getDatabase().getConfiguration().set(player.getUniqueId() + ".coins", 0);
+                plugin.getDatabase().getConfiguration().set(player.getUniqueId() + ".akinao-points", 0);
+                plugin.getDatabase().save();
+            }
             this.register(player);
 
         }, 500, TimeUnit.MILLISECONDS);

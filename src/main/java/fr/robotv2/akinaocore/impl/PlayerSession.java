@@ -3,6 +3,7 @@ package fr.robotv2.akinaocore.impl;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import fr.robotv2.akinaocore.AkinaoCore;
+import fr.robotv2.akinaocore.event.MiniGameEndEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class PlayerSession {
@@ -59,6 +60,7 @@ public class PlayerSession {
                 this.setCoins(coins + value);
                 break;
         }
+        plugin.getProxy().getPluginManager().callEvent(new MiniGameEndEvent(player, miniGame));
         sendDataToServer();
     }
 

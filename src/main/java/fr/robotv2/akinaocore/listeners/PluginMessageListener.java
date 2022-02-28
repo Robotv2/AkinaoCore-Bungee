@@ -6,6 +6,7 @@ import fr.robotv2.akinaocore.AkinaoCore;
 import fr.robotv2.akinaocore.impl.Currency;
 import fr.robotv2.akinaocore.impl.MiniGame;
 import fr.robotv2.akinaocore.impl.PlayerSession;
+import fr.robotv2.akinaocore.manager.NPCmanager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -63,6 +64,9 @@ public class PluginMessageListener implements Listener {
                 break;
             case "ask-booster-gui":
                 plugin.getBoosterManager().sendBoosters(player);
+                break;
+            case "actualize-count":
+                NPCmanager.actualizeCounts(player);
                 break;
         }
     }
