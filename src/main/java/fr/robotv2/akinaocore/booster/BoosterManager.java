@@ -18,16 +18,22 @@ public class BoosterManager {
 
     private final AkinaoCore plugin;
     private final BoosterUtilities boosterUtilities;
+    private final BoosterThanks thanks;
     private final Map<MiniGame, Booster> activeGlobalBooster = new HashMap<>();
     private final Map<UUID, List<Booster>> activePersonalBooster = new HashMap<>();
 
     public BoosterManager(AkinaoCore instance) {
         this.plugin = instance;
         this.boosterUtilities = new BoosterUtilities(instance);
+        this.thanks = new BoosterThanks(instance, this);
     }
 
     public BoosterUtilities getUtilities() {
         return boosterUtilities;
+    }
+
+    public BoosterThanks getThanks() {
+        return thanks;
     }
 
     public void sendBoosters(ProxiedPlayer player) {
@@ -36,6 +42,17 @@ public class BoosterManager {
         out.writeUTF(BoosterSerializer.serializePlayerBoosters(player));
         out.writeUTF(BoosterSerializer.serializeActiveBoosters(player));
         player.getServer().sendData(AkinaoCore.LOBBY_CHANNEL, out.toByteArray());
+    }
+
+    public List<Booster> getActiveGlobalBoosters() {
+        return new ArrayList<>(activeGlobalBooster.values());
+    }
+
+    public List<Booster> getActivePersonalBoosters(ProxiedPlayer player) {
+        List<Booster> result = activePersonalBooster.get(player.getUniqueId());
+        if(result == null)
+            result = Collections.emptyList();
+        return result;
     }
 
     public List<Booster> getActiveBoosters(ProxiedPlayer player) {
@@ -57,14 +74,17 @@ public class BoosterManager {
         if(this.isPersonal(booster))
             return activatePersonalBooster(player, booster);
         else
-            return activateGlobalBooster(booster);
+            return activateGlobalBooster(player, booster);
     }
 
-    private boolean activateGlobalBooster(Booster globalBooster) {
+    private boolean activateGlobalBooster(ProxiedPlayer player, Booster globalBooster) {
         Booster current = activeGlobalBooster.get(globalBooster.getMiniGame());
         if(current == null && !this.isPersonal(globalBooster)) {
+
             globalBooster.start();
             activeGlobalBooster.put(globalBooster.getMiniGame(), globalBooster);
+            thanks.activeThanks(player, globalBooster);
+
             plugin.getProxy().getScheduler().schedule(plugin, () -> {
                 activeGlobalBooster.remove(globalBooster.getMiniGame());
             }, globalBooster.getDelay(), TimeUnit.MINUTES);

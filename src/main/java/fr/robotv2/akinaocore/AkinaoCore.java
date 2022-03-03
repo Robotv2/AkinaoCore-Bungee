@@ -5,9 +5,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import fr.robotv2.akinaocore.booster.BoosterManager;
 import fr.robotv2.akinaocore.booster.impl.BoosterType;
-import fr.robotv2.akinaocore.commands.AkinaoBungeeCommand;
-import fr.robotv2.akinaocore.commands.BoosterAdminCommand;
-import fr.robotv2.akinaocore.commands.BoosterCommand;
+import fr.robotv2.akinaocore.commands.*;
 import fr.robotv2.akinaocore.config.BungeeConfig;
 import fr.robotv2.akinaocore.impl.Currency;
 import fr.robotv2.akinaocore.impl.MiniGame;
@@ -45,7 +43,7 @@ public final class AkinaoCore extends Plugin {
         playerSessionManager = new PlayerSessionManager(this);
         offlinePlayerHandler = new OfflinePlayersHandler(this);
         lobbyChanger = new LobbyChanger(this);
-        topTenManager = new TopTenManager(this);
+        //topTenManager = new TopTenManager(this);
         currencyManager = new CurrencyManager(this);
         boosterManager = new BoosterManager(this);
         welcomeManager = new WelcomeManager(this);
@@ -123,6 +121,8 @@ public final class AkinaoCore extends Plugin {
         manager.registerCommand(new AkinaoBungeeCommand(this));
         manager.registerCommand(new BoosterAdminCommand(this));
         manager.registerCommand(new BoosterCommand(this));
+        manager.registerCommand(new MsgCommand());
+        manager.registerCommand(new ThankCommand());
         manager.registerCommand(welcomeManager);
 
         manager.getCommandCompletions().registerCompletion("currencies", c -> {

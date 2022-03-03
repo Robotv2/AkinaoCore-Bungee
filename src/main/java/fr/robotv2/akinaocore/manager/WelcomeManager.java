@@ -55,7 +55,7 @@ public class WelcomeManager extends BaseCommand {
                 .map(uuid -> plugin.getProxy().getPlayer(uuid))
                 .filter(Objects::nonNull)
                 .filter(target -> !Objects.equals(target.getUniqueId(), sender.getUniqueId()))
-                .filter(target -> hasWelcome(sender, target))
+                .filter(target -> !hasWelcome(sender, target))
                 .collect(Collectors.toList());
 
     }

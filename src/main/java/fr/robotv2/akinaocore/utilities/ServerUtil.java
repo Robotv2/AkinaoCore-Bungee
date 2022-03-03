@@ -15,6 +15,10 @@ public class ServerUtil {
         }
     }
 
+    public static void broadcast(String message) {
+        getServers().values().forEach(serverInfo -> broadcast(serverInfo, message));
+    }
+
     public static Map<String, ServerInfo> getServers() {
         return AkinaoCore.getInstance().getProxy().getServers();
     }
